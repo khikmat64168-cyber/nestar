@@ -5,12 +5,12 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/nestar/tsconfig.app.json"
+    "tsConfigPath": "apps/nestar-api/tsconfig.app.json"
   },
   "monorepo": true,
   "root": "apps/nestar-api",
   "projects": {
-    "nestar": {
+    "nestar-api": {
       "type": "application",
       "root": "apps/nestar-api",
       "entryFile": "main",
