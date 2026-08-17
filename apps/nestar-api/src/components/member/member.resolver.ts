@@ -9,7 +9,7 @@ export class MemberResolver {
 	constructor(private readonly memberService: MemberService) {}
 
 	@Mutation(() => Member)
-	@UsePipes(ValidationPipe)
+	// @UsePipes(ValidationPipe). Global integration dan so'ng olib tashlandi ?
 	public async signup(@Args('input') input: MemberInput): Promise<Member> {
 		try {
 			console.log('Mutation : signup');
@@ -22,7 +22,7 @@ export class MemberResolver {
 	}
 
 	@Mutation(() => Member)
-	@UsePipes(ValidationPipe)
+	// @UsePipes(ValidationPipe). Global integration dan so'ng olib tashlandi ?
 	public async login(@Args('input') input: LoginInput): Promise<Member> {
 		try {
 			console.log('Mutation: login');

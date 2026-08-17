@@ -51,4 +51,8 @@ export class MemberService {
 	public async getMember(): Promise<string> {
 		return 'getMember executed';
 	}
+
+	public async getProducts(): Promise<string> {
+		return 'getMember executed';
+	}
 }
