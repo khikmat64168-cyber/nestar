@@ -16,11 +16,11 @@ export class MemberService {
 			//Auth via tokens
 			return result;
 		} catch (err) {
-			console.log('Error servicemodel: ', err);
+			console.log('Error servicemodel: ', err instanceof Error ? err.message : String(err));
 			if (err instanceof Error && 'code' in err && err.code === 11000) {
 				throw new BadRequestException('Member already exists with this phone number or nickname');
 			}
-			throw new BadRequestException();
+			throw new BadRequestException(Message.USED_MEMBER_NICK_OR_PHONE);
 		}
 	}
 

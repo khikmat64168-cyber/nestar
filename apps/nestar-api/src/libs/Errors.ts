@@ -11,48 +11,53 @@
  */
 
 export enum HttpCode {
-  OK = 200,
-  CREATED = 201,
-  ACCEPTED = 202,
-  NO_CONTENT = 204,
-  NOT_MODIFIED = 304,
-  BAD_REQUEST = 400,
-  UNAUTHORIZED = 401,
-  FORBIDDEN = 403,
-  NOT_FOUND = 404,
-  INTERNAL_SERVER_ERROR = 500,
+	OK = 200,
+	CREATED = 201,
+	ACCEPTED = 202,
+	NO_CONTENT = 204,
+	NOT_MODIFIED = 304,
+	BAD_REQUEST = 400,
+	UNAUTHORIZED = 401,
+	FORBIDDEN = 403,
+	NOT_FOUND = 404,
+	INTERNAL_SERVER_ERROR = 500,
 }
 
 export enum Message {
-  SOMETHING_WENT_WRONG = 'Something went wrong',
-  NO_DATA_FOUND = 'No data found',
-  CREATED_AT = 'Created at',
-  UPDATED_AT = 'Updated at',
-  CREATE_FAILED = 'Create failed',
-  UPDATE_FAILED = 'Update failed',
+	USED_MEMBER_NICK_OR_PHONE = 'Already used nick or phone',
+	SOMETHING_WENT_WRONG = 'Something went wrong!',
+	NO_DATA_FOUND = 'No data found!',
+	CREATE_FAILED = 'Create failed!',
+	UPDATE_FAILED = 'Update failed!',
+	REMOVE_FAILED = 'Remove failed!',
+	UPLOAD_FAILED = 'Upload failed!',
+	BAD_REQUEST = 'Bad Request',
 
-  USED_NICK_PHONE = ' You are inserting already used nick or phone',
-  NO_MEMBER_NICK = 'No member with this nick',
-  BLOCKED_USER = 'You have been blocked , contact restaurant',
-  WRONG_PASSWORD = 'Wrong password, please try again',
-  NOT_AUTHENTICATED = 'You are not authenticated , please login first ',
-  TOKEN_CREATION_FAILED = 'Token creation error',
+	NO_MEMBER_NICK = 'No member with that member nick!',
+	BLOCKED_USER = 'You have been blocked!',
+	WRONG_PASSWORD = 'Wrong password, try again!',
+	NOT_AUTHENTICATED = 'You are not authenticated, please login first!',
+	TOKEN_NOT_EXIST = 'Bearer Token is not provided!',
+	ONLY_SPECIFIC_ROLES_ALLOWED = 'Allowed only for members with specific roles!',
+	NOT_ALLOWED_REQUEST = 'Not Allowed Request!',
+	PROVIDE_ALLOWED_FORMAT = 'Please provide jpg, jpeg or png images!',
+	SELF_SUBSCRIPTION_DENIED = 'Self subscription is denied!',
 }
 
 class Errors extends Error {
-  public code: HttpCode;
-  public message: Message;
+	public code: HttpCode;
+	public message: Message;
 
-  static standard = {
-    code: HttpCode.INTERNAL_SERVER_ERROR,
-    message: Message.SOMETHING_WENT_WRONG,
-  };
+	static standard = {
+		code: HttpCode.INTERNAL_SERVER_ERROR,
+		message: Message.SOMETHING_WENT_WRONG,
+	};
 
-  constructor(statusCode: HttpCode, statusMessage: Message) {
-    super();
-    this.code = statusCode;
-    this.message = statusMessage;
-  }
+	constructor(statusCode: HttpCode, statusMessage: Message) {
+		super();
+		this.code = statusCode;
+		this.message = statusMessage;
+	}
 }
 
 export default Errors;
