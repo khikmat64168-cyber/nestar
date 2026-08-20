@@ -9,6 +9,12 @@ import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class MemberService {
+	updateMemberByAdmin(): string | PromiseLike<string> {
+		throw new Error('Method not implemented.');
+	}
+	getAllMembersByAdmin(): string | PromiseLike<string> {
+		throw new Error('Method not implemented.');
+	}
 	constructor(
 		@InjectModel('Member') private readonly memberModel: Model<Member>,
 		private authService: AuthService,
