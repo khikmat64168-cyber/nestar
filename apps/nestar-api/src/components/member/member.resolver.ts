@@ -56,8 +56,8 @@ export class MemberResolver {
 	@UseGuards(AuthGuard)
 	@Query(() => String)
 	public async checkAuth(@AuthMember('memberNick') memberNick: string): Promise<string> {
-		console.log('Query : check Auth');
-		console.log(' ');
+		console.log('Query : checkAuth');
+		console.log('memberNicd:', memberNick);
 
 		return `hi ${memberNick}`;
 	}
