@@ -2,19 +2,13 @@ import { BadRequestException, Injectable, InternalServerErrorException } from '@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Member } from '../../libs/dto/member/member';
-import { LoginInput, MemberInput } from '../../libs/dto/member/member.input';
+import { LoginInput, MemberInput, MemberUpdateInput } from '../../libs/dto/member/member.input';
 import { MemberStatus } from '../../libs/enums/member.enums';
 import { Message } from '../../libs/Errors';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class MemberService {
-	updateMemberByAdmin(): string | PromiseLike<string> {
-		throw new Error('Method not implemented.');
-	}
-	getAllMembersByAdmin(): string | PromiseLike<string> {
-		throw new Error('Method not implemented.');
-	}
 	constructor(
 		@InjectModel('Member') private readonly memberModel: Model<Member>,
 		private authService: AuthService,
@@ -70,5 +64,17 @@ export class MemberService {
 
 	public async getProducts(): Promise<string> {
 		return 'getMember executed';
+	}
+
+	public async getAllMembersByAdmin(): Promise<Member[]> {
+		return await this.memberModel.find().exec();
+	}
+
+	public async updateMemberByAdmin(input: MemberUpdateInput): Promise<Member> {
+		const { _id, ...rest } = input;
+		const result = await this.memberModel.findByIdAndUpdate(_id, rest, { new: true }).exec();
+		if (!result) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
+		return result;
 	}
 }
