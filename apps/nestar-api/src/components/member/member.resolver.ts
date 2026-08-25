@@ -9,6 +9,7 @@ import * as mongoose from 'mongoose';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { MemberType } from '../../libs/enums/member.enums';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { MemberUpdate } from '../../libs/dto/member/member.update';
 
 @Resolver()
 export class MemberResolver {
@@ -41,36 +42,42 @@ export class MemberResolver {
 		}
 	}
 
-	// Authenticated
-
-	@UseGuards(AuthGuard)
-	@Mutation(() => String)
-	public async updateMember(@AuthMember('_id') memberId: mongoose.ObjectId): Promise<string> {
-		console.log('Mutation: updateMember');
-
-		return this.memberService.updateMember();
-	}
-
-	//Admin
-
 	@UseGuards(AuthGuard)
 	@Query(() => String)
-	public async checkAuth(@AuthMember('memberNick') memberNick: string): Promise<string> {
+	public async checkAuth(@AuthMember() authMember: Member): Promise<string> {
 		console.log('Query : checkAuth');
-		console.log('memberNicd:', memberNick);
+		console.log('memberNicd:', authMember.memberNick);
 
-		return `hi ${memberNick}`;
+		return `hi ${authMember.memberNick}, you are ${authMember.memberType} (memberId: ${authMember._id})`;
 	}
 
 	@Roles(MemberType.USER)
 	@UseGuards(AuthGuard)
 	@Query(() => String)
-	public async checkAuthRoles(@AuthMember('memberNick') memberNick: string): Promise<string> {
+	public async checkAuthRoles(@AuthMember() authMember: Member): Promise<string> {
 		console.log('Query : checkAuthRoles');
-		console.log('memberNicd:', memberNick);
+		console.log('memberNicd:', authMember.memberNick);
 
-		return `hi ${memberNick}`;
+		return `hi ${authMember.memberNick}, you are ${authMember.memberType} (memberId: ${authMember._id})`;
 	}
+
+	// Authenticated
+
+	@UseGuards(AuthGuard)
+	@Mutation(() => Member)
+	public async updateMember(
+		@Args('input') input: MemberUpdate,
+		@AuthMember('_id') memberId: mongoose.ObjectId,
+	): Promise<Member> {
+		console.log('Mutation: updateMember');
+		// console.log('memberId', memberId);
+
+		delete (input as Partial<MemberUpdate>)._id;
+
+		return this.memberService.updateMember(memberId, input);
+	}
+
+	//Admin
 
 	@Query(() => String)
 	public async getMember(): Promise<string> {
