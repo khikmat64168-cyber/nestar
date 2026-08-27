@@ -16,7 +16,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { MemberType } from '../../libs/enums/member.enums';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { MemberUpdate } from '../../libs/dto/member/member.update';
-import { getSerialForImage, isValidImage, shapeIntoMongoObjectId } from '../../libs/config';
+import { ensureUploadDir, getSerialForImage, isValidImage, shapeIntoMongoObjectId } from '../../libs/config';
 import { WithoutGuard } from '../auth/guards/without.guard';
 
 import { GraphQLUpload, FileUpload } from 'graphql-upload';
@@ -150,6 +150,7 @@ export class MemberResolver {
 
 		const imageName = getSerialForImage(filename);
 		const url = `uploads/${target}/${imageName}`;
+		ensureUploadDir(`uploads/${target}`);
 		const stream = createReadStream();
 
 		const result = await new Promise((resolve, reject) => {
@@ -181,6 +182,7 @@ export class MemberResolver {
 
 				const imageName = getSerialForImage(filename);
 				const url = `uploads/${target}/${imageName}`;
+				ensureUploadDir(`uploads/${target}`);
 				const stream = createReadStream();
 
 				const result = await new Promise((resolve, reject) => {
@@ -193,7 +195,7 @@ export class MemberResolver {
 
 				uploadedImages[index] = url;
 			} catch (err) {
-				console.log('Error, file missing!');
+				console.log('Error, file missing!', err);
 			}
 		});
 

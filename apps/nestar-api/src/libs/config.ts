@@ -7,6 +7,11 @@ export const availableMembersSorts = ['createdAt', 'updatedAt', 'memberLikes', '
 // IMAGE CONFIGURATION (config.js)
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
+import * as fs from 'fs';
+
+export const ensureUploadDir = (dir: string) => {
+	if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+};
 
 export const validMimeTypes = ['image/png', 'image/jpg', 'image/jpeg'];
 export const validImageExtensions = ['.png', '.jpg', '.jpeg'];
