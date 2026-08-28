@@ -9,7 +9,8 @@ import { StatisticModifier, T } from '../../libs/types/common';
 import { PropertyStatus } from '../../libs/enums/property.enum';
 import { ViewGroup } from '../../libs/enums/view.enum';
 import { ViewService } from '../view/view.service';
-
+import { PropertyUpdate } from '../../libs/dto/member/property/property.update';
+import moment from 'moment';
 @Injectable()
 export class PropertyService {
 	constructor(
@@ -68,5 +69,35 @@ export class PropertyService {
 				},
 			)
 			.exec();
+	}
+
+	public async updateProperty(memberId: ObjectId, input: PropertyUpdate): Promise<Property> {
+		let { propertyStatus, soldAt, deletedAt } = input;
+		const search: T = {
+			_id: input._id,
+			memberId: memberId,
+			propertyStatus: PropertyStatus.ACTIVE,
+		};
+
+		if (propertyStatus === PropertyStatus.SOLD) soldAt = moment().toDate();
+		else if (propertyStatus === PropertyStatus.DELETE) deletedAt = moment().toDate();
+
+		const result = await this.propertyModel
+			.findOneAndUpdate(search, input, {
+				new: true,
+			})
+			.exec();
+
+		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+
+		if (soldAt || deletedAt) {
+			await this.memberService.memberStatsEditor({
+				_id: memberId,
+				targetKey: 'memberProperties',
+				modifier: -1,
+			});
+		}
+
+		return result;
 	}
 }
