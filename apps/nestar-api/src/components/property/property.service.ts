@@ -3,7 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Properties, Property } from '../../libs/dto/member/property/property';
 import { Direction, Message } from '../../libs/Errors';
-import { AgentPropertiesInquiry, PropertyInput } from '../../libs/dto/member/property/property.input';
+import {
+	AgentPropertiesInquiry,
+	AllPropertiesInquiry,
+	PropertyInput,
+} from '../../libs/dto/member/property/property.input';
 import { MemberService } from '../member/member.service';
 import { StatisticModifier, T } from '../../libs/types/common';
 import { PropertyStatus } from '../../libs/enums/property.enum';
@@ -122,7 +126,7 @@ export class PropertyService {
 							{ $limit: input.limit },
 							// meLiked
 							lookupMember,
-							{ $unwind: '$memberData' },
+							{ $unwind: '$memberData' }, // memberData: memberDataValue olib beriladi
 						],
 						metaCounter: [{ $count: 'total' }],
 					},
@@ -188,6 +192,37 @@ export class PropertyService {
 							{ $limit: input.limit },
 							lookupMember,
 							{ $unwind: '$memberData' },
+						],
+						metaCounter: [{ $count: 'total' }],
+					},
+				},
+			])
+			.exec();
+
+		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+
+		return result[0];
+	}
+
+	public async getAllPropertiesByAdmin(input: AllPropertiesInquiry): Promise<Properties> {
+		const { propertyStatus, propertyLocationList } = input.search;
+		const match: T = {};
+		const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
+
+		if (propertyStatus) match.propertyStatus = propertyStatus;
+		if (propertyLocationList) match.propertyLocation = { $in: propertyLocationList };
+
+		const result = await this.propertyModel
+			.aggregate([
+				{ $match: match },
+				{ $sort: sort },
+				{
+					$facet: {
+						list: [
+							{ $skip: (input.page - 1) * input.limit },
+							{ $limit: input.limit },
+							lookupMember,
+							{ $unwind: '$memberData' }, // memberData: memberDataValue olib beriladi
 						],
 						metaCounter: [{ $count: 'total' }],
 					},
