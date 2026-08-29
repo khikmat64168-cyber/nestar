@@ -4,8 +4,8 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { UseGuards } from '@nestjs/common';
 import { MemberType } from '../../libs/enums/member.enums';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { PropertyInput } from '../../libs/dto/member/property/property.input';
-import { Property } from '../../libs/dto/member/property/property';
+import { PropertiesInquiry, PropertyInput } from '../../libs/dto/member/property/property.input';
+import { Properties, Property } from '../../libs/dto/member/property/property';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import * as mongoose from 'mongoose';
 import { WithoutGuard } from '../auth/guards/without.guard';
@@ -51,5 +51,15 @@ export class PropertyResolver {
 		console.log('Mutation: updateProperty');
 		input._id = shapeIntoMongoObjectId(input._id);
 		return await this.propertyService.updateProperty(memberId, input);
+	}
+
+	@UseGuards(WithoutGuard)
+	@Query((returns) => Properties)
+	public async getProperties(
+		@Args('input') input: PropertiesInquiry,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Properties> {
+		console.log('Query: getProperties');
+		return await this.propertyService.getProperties(memberId, input);
 	}
 }
