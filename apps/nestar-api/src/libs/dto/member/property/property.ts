@@ -72,6 +72,9 @@ export class Property {
 	constructedAt!: Date;
 
 	@Field(() => Date)
+	createdAt!: Date;
+
+	@Field(() => Date)
 	updatedAt!: Date;
 
 	//from aggregation
