@@ -3,22 +3,23 @@ import { IsIn, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
 import type { ObjectId } from 'mongoose';
 import { BoardArticleCategory, BoardArticleStatus } from '../../../enums/board-article.enum';
 import { Direction } from '../../../Errors';
+import { availableBoardsArticleSorts } from '../../../config';
 
 @InputType()
 export class BoardArticleInput {
 	@IsNotEmpty()
 	@Field(() => BoardArticleCategory)
-	articleCategory: BoardArticleCategory;
+	articleCategory!: BoardArticleCategory;
 
 	@IsNotEmpty()
 	@Length(3, 50)
 	@Field(() => String)
-	articleTitle: string;
+	articleTitle!: string;
 
 	@IsNotEmpty()
 	@Length(3, 250)
 	@Field(() => String)
-	articleContent: string;
+	articleContent!: string;
 
 	@IsOptional()
 	@Field(() => String, { nullable: true })
@@ -47,12 +48,12 @@ export class BoardArticlesInquiry {
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	page: number;
+	page!: number;
 
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	limit: number;
+	limit!: number;
 
 	@IsOptional()
 	@IsIn(['createdAt', 'updatedAt', 'articleLikes', 'articleViews'])
@@ -65,7 +66,7 @@ export class BoardArticlesInquiry {
 
 	@IsNotEmpty()
 	@Field(() => BAISearch)
-	search: BAISearch;
+	search!: BAISearch;
 }
 
 @InputType()
@@ -84,15 +85,15 @@ export class AllBoardArticlesInquiry {
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	page: number;
+	page!: number;
 
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	limit: number;
+	limit!: number;
 
 	@IsOptional()
-	@IsIn(['createdAt', 'updatedAt', 'articleLikes', 'articleViews'])
+	@IsIn(availableBoardsArticleSorts)
 	@Field(() => String, { nullable: true })
 	sort?: string;
 
@@ -102,5 +103,5 @@ export class AllBoardArticlesInquiry {
 
 	@IsNotEmpty()
 	@Field(() => ABAISearch)
-	search: ABAISearch;
+	search!: ABAISearch;
 }
