@@ -1,33 +1,33 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsIn, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
-import { ObjectId } from 'mongoose';
-import { CommentGroup } from '../../enums/comment.enum';
-import { Direction } from '../../enums/common.enum';
-import { availableCommentSorts } from '../../config';
+import * as mongoose from 'mongoose';
+import { CommentGroup } from '../../../enums/comment.enum';
+import { Direction } from '../../../Errors';
+import { availableCommentSorts } from '../../../config';
 
 @InputType()
 export class CommentInput {
 	@IsNotEmpty()
 	@Field(() => CommentGroup)
-	commentGroup: CommentGroup;
+	commentGroup!: CommentGroup;
 
 	@IsNotEmpty()
 	@Length(1, 100)
 	@Field(() => String)
-	commentContent: string;
+	commentContent!: string;
 
 	@IsNotEmpty()
 	@Field(() => String)
-	commentRefId: ObjectId;
+	commentRefId!: mongoose.ObjectId;
 
-	memberId?: ObjectId;
+	memberId?: mongoose.ObjectId;
 }
 
 @InputType()
 class CISearch {
 	@IsNotEmpty()
 	@Field(() => String)
-	commentRefId: ObjectId;
+	commentRefId!: mongoose.ObjectId;
 }
 
 @InputType()
@@ -35,12 +35,12 @@ export class CommentsInquiry {
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	page: number;
+	page!: number;
 
 	@IsNotEmpty()
 	@Min(1)
 	@Field(() => Int)
-	limit: number;
+	limit!: number;
 
 	@IsOptional()
 	@IsIn(availableCommentSorts)
@@ -53,5 +53,5 @@ export class CommentsInquiry {
 
 	@IsNotEmpty()
 	@Field(() => CISearch)
-	search: CISearch;
+	search!: CISearch;
 }

@@ -29,23 +29,23 @@ export class Property {
 	@Field(() => Number)
 	propertySquare!: number;
 
-	@Field(() => String)
-	propertyBeds!: string;
+	@Field(() => Int)
+	propertyBeds!: number;
 
-	@Field(() => String)
-	propertyComments!: string;
+	@Field(() => Int)
+	propertyComments!: number;
 
-	@Field(() => String)
-	propertyLikes!: string;
+	@Field(() => Int)
+	propertyLikes!: number;
 
-	@Field(() => String)
-	propertyRooms!: string;
+	@Field(() => Int)
+	propertyRooms!: number;
 
 	@Field(() => Int)
 	propertyViews!: number;
 
-	@Field(() => String)
-	propertyRank!: string;
+	@Field(() => Int)
+	propertyRank!: number;
 
 	@Field(() => [String])
 	propertyImages!: string[];
