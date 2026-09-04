@@ -121,7 +121,7 @@ export class MemberResolver {
 		console.log('Query: getMember');
 		const tergetId = shapeIntoMongoObjectId(input);
 
-		return this.memberService.getMember(tergetId, memberId);
+		return this.memberService.getMember(memberId, tergetId);
 	}
 
 	/** Admin  **/
