@@ -76,7 +76,7 @@ export class Following {
 @ObjectType()
 export class Followings {
 	@Field(() => [Following])
-	lis!: Following[];
+	list!: Following[];
 
 	@Field(() => [TotalCounter], { nullable: true })
 	metaCounter!: TotalCounter[];
