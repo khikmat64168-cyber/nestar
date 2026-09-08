@@ -130,6 +130,15 @@ export const lookupFavorite = {
 	},
 };
 
+export const lookupVisit = {
+	$lookup: {
+		from: 'members',
+		localField: 'visitedProperty.memberId',
+		foreignField: '_id',
+		as: 'visitedProperty.memberData',
+	},
+};
+
 export const lookupFollowingData = {
 	$lookup: {
 		from: 'members',
