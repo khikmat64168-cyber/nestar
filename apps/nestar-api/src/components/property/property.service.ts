@@ -6,6 +6,7 @@ import { Direction, Message } from '../../libs/Errors';
 import {
 	AgentPropertiesInquiry,
 	AllPropertiesInquiry,
+	OrdinaryInquiry,
 	PropertyInput,
 } from '../../libs/dto/member/property/property.input';
 import { MemberService } from '../member/member.service';
@@ -178,6 +179,10 @@ export class PropertyService {
 				return { [ele]: true };
 			});
 		}
+	}
+
+	public async getFavorites(memberId: ObjectId, input: OrdinaryInquiry): Promise<Properties> {
+		return await this.likeService.getFavoritesProperties(memberId, input);
 	}
 
 	public async getAgentProperties(memberId: ObjectId, input: AgentPropertiesInquiry): Promise<Properties> {
