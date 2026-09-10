@@ -6,6 +6,7 @@ import { graphql } from 'graphql';
 
 import { graphqlUploadExpress } from 'graphql-upload';
 import * as express from 'express';
+import { WsAdapter } from '@nestjs/platform-ws';
 
 // webpack --watch rejimida fayl o'zgarganda, eski jarayon portni to'liq
 // bo'shatib ulgurmasdan yangisi ishga tushishi mumkin (EADDRINUSE).
@@ -35,6 +36,8 @@ async function bootstrap() {
 	app.enableShutdownHooks();
 	app.enableCors({ origin: true, credentials: true });
 	app.use(graphqlUploadExpress({ maxFileSize: 15000000, maxFiles: 10 }));
+
+	app.useWebSocketAdapter(new WsAdapter(app));
 
 	app.use('/uploads', express.static('./uploads'));
 	await listenWithRetry(app, process.env.PORT_API ?? 3000);
